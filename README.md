@@ -1,90 +1,90 @@
-# Agent Toolkit for AWS
+# AWS用エージェントツールキット
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Build](https://github.com/aws/agent-toolkit-for-aws/actions/workflows/build.yml/badge.svg)](https://github.com/aws/agent-toolkit-for-aws/actions/workflows/build.yml)
 [![Status](https://img.shields.io/badge/status-GA-green.svg)](https://github.com/aws/agent-toolkit-for-aws)
 
-Help AI coding agents build, deploy, and manage applications on AWS.
+AIコーディングエージェントがAWS上でアプリケーションを構築、デプロイ、管理するのを支援します。
 
-The Agent Toolkit for AWS gives AI coding agents the tools, knowledge, and guardrails they need to work with AWS services. It works with the coding agents developers already use — including Claude Code, Codex, Cursor, and Kiro.
+AWS用エージェントツールキットは、AIコーディングエージェントがAWSサービスを扱うために必要なツール、知識、ガードレール提供します。Claude Code、Codex、Cursor、Kiroなど、開発者がすでに使用しているコーディングエージェントで動作します。
 
-## Quick start
+## クイックスタート
 
 ### AWS CLI
 
-Use the Agent Toolkit directly from your terminal with the AWS CLI:
+AWS CLIを使用して、ターミナルからエージェントツールキットを直接使用します：
 
 ```
 aws configure agent-toolkit
 ```
 
-See the [AWS CLI integration guide](https://docs.aws.amazon.com/agent-toolkit/latest/userguide/aws-cli.html) for setup, configuration, and usage instructions.
+セットアップ、設定、使用方法については、[AWS CLI統合ガイド](https://docs.aws.amazon.com/agent-toolkit/latest/userguide/aws-cli.html)を参照してください。
 
 ### Claude Code
 
-The plugins are available on the official Anthropic marketplace (`claude-plugins-official`) which is added to your Claude Code installation by default.
-Use the following commands to install supported plugins from the toolkit:
+プラグインは公式のAnthropicマーケットプレイス（`claude-plugins-official`）で利用可能です。これはClaudeコードのインストールにデフォルトで追加されます。
+ツールキットからサポートされているプラグインをインストールするには、以下のコマンドを使用します。
 
-For `aws-core` that covers service selection, CDK/CloudFormation, serverless, containers, storage, observability, billing, SDK usage, and deployment:
+サービス選択、CDK/CloudFormation、サーバーレス、コンテナ、ストレージ、可観測性、課金、SDK使用方法、デプロイメントをカバーする`aws-core`の場合：
 
 ```
 /plugin install aws-core@claude-plugins-official
 ```
 
-> **Tip:** If you get `Plugin not found`, update your local marketplace index first:
+> **ヒント：** `Plugin not found`というエラーが出た場合は、まずローカルマーケットプレイスインデックスを更新してください：
 >
 > ```
 > /plugin marketplace update claude-plugins-official
 > ```
 
-For `aws-agents` that covers building AI agents on AWS with Amazon Bedrock and AgentCore:
+Amazon BedrockとAgentCoreを使用してAWS上でAIエージェントを構築するための`aws-agents`の場合：
 
 ```
 /plugin install aws-agents@claude-plugins-official
 ```
 
-For `aws-data-analytics` that covers data lake, analytics, and ETL workflows with S3 Tables, AWS Glue, and Athena:
+S3テーブル、AWS Glue、Athenaを使用したデータレイク、分析、ETLワークフローをカバーする`aws-data-analytics`の場合：
 
 ```
 /plugin install aws-data-analytics@claude-plugins-official
 ```
 
-For `aws-agents-for-devsecops` used to investigate incidents, review code and execute UAT for release readiness, scan code for vulnerabilities, and run penetration tests with AWS DevOps Agent and AWS Security Agent.
+インシデント調査、コードレビュー、リリース準備のためのUAT実行、脆弱性スキャン、AWS DevOpsエージェントとAWSセキュリティエージェントを使用したペネトレーションテストを実行するための`aws-agents-for-devsecops`の場合：
 
 ```
 /plugin marketplace add aws/agent-toolkit-for-aws
 /plugin install aws-agents-for-devsecops
 /reload-plugins
 
-# Or from Claude's official marketplace:
+# またはClaudeの公式マーケットプレイスから：
 /plugin install aws-agents-for-devsecops@claude-plugins-official
 /reload-plugins
 
-# Setup:
+# セットアップ：
 /aws-agents-for-devsecops:setup
 ```
 
 ### Codex
 
-In your terminal:
+ターミナルで：
 
 ```
 codex plugin marketplace add aws/agent-toolkit-for-aws
 ```
 
-Then launch Codex and run `/plugins` to browse and install the **aws-core** plugin.
+次にCodexを起動し、`/plugins`を実行して**aws-core**プラグインを参照してインストールします。
 
 ### Cursor
 
-Add this repository as a team marketplace from **Settings → Plugins → Team Marketplaces → Add Marketplace → Import from Repo**, pointing it at `aws/agent-toolkit-for-aws`. Cursor indexes the plugins listed in [`.cursor-plugin/marketplace.json`](.cursor-plugin/marketplace.json) on import.
+**設定 → プラグイン → チームマーケットプレイス → マーケットプレイスを追加 → リポジトリからインポート**からこのリポジトリをチームマーケットプレイスとして追加し、`aws/agent-toolkit-for-aws`をポイントします。Cursorはインポート時に[`.cursor-plugin/marketplace.json`](.cursor-plugin/marketplace.json)に列出されているプラグインをインデックスします。
 
-Then open the **Plugins** panel and install the **aws-core** plugin (start here), or **aws-agents** and **aws-data-analytics** as needed. Each plugin bundles the AWS MCP Server configuration and agent skills.
+次に**プラグイン**パネルを開き、**aws-core**プラグイン（ここから始めます）、または必要に応じて**aws-agents**と**aws-data-analytics**をインストールします。各プラグインはAWS MCPサーバー設定とエージェントスキルをバンドルしています。
 
 ### Kiro
 
-Kiro setup has two independent parts: the AWS MCP Server (for runtime AWS API access and documentation search) and local skills (for task-specific agent guidance). They complement each other but work independently — skills don't require the MCP server, and the MCP server doesn't serve locally-installed skills.
+Kiroのセットアップは2つの独立した部分で構成されています：AWS MCPサーバー（ランタイムAWS APIアクセスとドキュメント検索用）とローカルスキル（タスク固有のエージェントガイダンス用）。これらは相互に補完しますが、独立して動作します。スキルはMCPサーバーを必要とせず、MCPサーバーはローカルにインストールされたスキルを提供しません。
 
-**1. Add the AWS MCP Server** to your Kiro MCP configuration (`.kiro/settings/mcp.json`):
+**1. AWS MCPサーバーを追加します**（Kiro MCP設定`.kiro/settings/mcp.json`に）：
 
 ```json
 {
@@ -102,89 +102,89 @@ Kiro setup has two independent parts: the AWS MCP Server (for runtime AWS API ac
 }
 ```
 
-> **Note:** It is recommended to pin to a specific version (e.g., `@1.6.4`) to ensure reproducible behavior and protect against supply chain risks. We recommend regularly checking [PyPI](https://pypi.org/project/mcp-proxy-for-aws/) for new stable versions and updating accordingly.
+> **注意：** サプライチェーンリスクから保護し、再現可能な動作を保証するために、特定のバージョン（例：`@1.6.4`）にピン留めすることをお勧めします。[PyPI](https://pypi.org/project/mcp-proxy-for-aws/)で定期的に新しい安定版をチェックし、それに応じて更新することをお勧めします。
 
-The MCP server gives your agent access to AWS APIs, sandboxed script execution, and real-time documentation search.
+MCPサーバーにより、エージェントはAWS API、サンドボックス化されたスクリプト実行、およびリアルタイムのドキュメント検索にアクセスできます。
 
-**2. Install skills** from this repository:
-
-```
-npx skills add aws/agent-toolkit-for-aws/skills
-```
-
-This installs skill files to `~/.kiro/skills/` (global) or `.kiro/skills/` (project-level). Each skill is a directory containing a `SKILL.md` file and optionally a `references/` subdirectory with additional context the agent reads from the local filesystem when needed. Kiro discovers installed skills automatically and activates them on demand when a task matches.
-
-> **Prerequisites:** You need [uv](https://docs.astral.sh/uv/) installed. An AWS account with credentials configured locally is required for API calls and script execution, but not for documentation search or skill discovery. See the [user guide](https://docs.aws.amazon.com/agent-toolkit/latest/userguide/) for detailed setup instructions.
-
-### Other agents
-
-See the [AWS MCP Server getting started guide](https://docs.aws.amazon.com/agent-toolkit/latest/userguide/getting-started-aws-mcp-server.html) for instructions on configuring the AWS MCP Server with your agent.
-
-Then install skills from this repository:
+**2. このリポジトリからスキルをインストールします**：
 
 ```
 npx skills add aws/agent-toolkit-for-aws/skills
 ```
 
-> **Prerequisites:** You need [uv](https://docs.astral.sh/uv/) installed. An AWS account with credentials configured locally is required for API calls and script execution, but not for documentation search or skill discovery. See the [user guide](https://docs.aws.amazon.com/agent-toolkit/latest/userguide/) for detailed setup instructions.
+これにより、スキルファイルが`~/.kiro/skills/`（グローバル）または`.kiro/skills/`（プロジェクトレベル）にインストールされます。各スキルは`SKILL.md`ファイルと、オプションで必要に応じてエージェントがローカルファイルシステムから読み込む追加コンテキストが含まれた`references/`サブディレクトリを含むディレクトリです。Kiroはインストール済みスキルを自動的に検出し、タスクが一致するときにオンデマンドで有効化します。
 
-## What's included
+> **前提条件：** [uv](https://docs.astral.sh/uv/)がインストールされている必要があります。AWS APIコールとスクリプト実行には、ローカルに設定されたAWSアカウント認証情報が必要ですが、ドキュメント検索またはスキル検出には不要です。詳細なセットアップ手順については、[ユーザーガイド](https://docs.aws.amazon.com/agent-toolkit/latest/userguide/)を参照してください。
 
-### Plugins
+### その他のエージェント
 
-Plugins bundle the AWS MCP Server configuration and agent skills into a single install for your coding agent.
+エージェントでAWS MCPサーバーを設定する手順については、[AWS MCPサーバー入門ガイド](https://docs.aws.amazon.com/agent-toolkit/latest/userguide/getting-started-aws-mcp-server.html)を参照してください。
 
-| Plugin                                                        | Description                                                                                                                                                                                                                                                                                                                                                                        |
+次に、このリポジトリからスキルをインストールします：
+
+```
+npx skills add aws/agent-toolkit-for-aws/skills
+```
+
+> **前提条件：** [uv](https://docs.astral.sh/uv/)がインストールされている必要があります。AWS APIコールとスクリプト実行には、ローカルに設定されたAWSアカウント認証情報が必要ですが、ドキュメント検索またはスキル検出には不要です。詳細なセットアップ手順については、[ユーザーガイド](https://docs.aws.amazon.com/agent-toolkit/latest/userguide/)を参照してください。
+
+## 含まれるもの
+
+### プラグイン
+
+プラグインは、AWS MCPサーバー設定とエージェントスキルを単一のインストールにバンドルして、コーディングエージェント用に提供します。
+
+| プラグイン                                                        | 説明                                                                                                                                                                                                                                                                                                                                                                        |
 | ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [aws-core](plugins/aws-core/)                                 | Core AWS skills and MCP Server configuration. Covers service selection, CDK/CloudFormation, serverless, containers, storage, observability, billing, SDK usage, and deployment. **Start here.**                                                                                                                                                                                    |
-| [aws-agents](plugins/aws-agents/)                             | Skills for building AI agents on AWS with Amazon Bedrock and AgentCore.                                                                                                                                                                                                                                                                                                            |
-| [aws-data-analytics](plugins/aws-data-analytics/)             | Skills for data lake, analytics, and ETL workflows with S3 Tables, AWS Glue, and Athena.                                                                                                                                                                                                                                                                                           |
-| [aws-agents-for-devsecops](plugins/aws-agents-for-devsecops/) | Investigate incidents, review code and execute UAT for release readiness, scan code for vulnerabilities, and run penetration tests with [AWS DevOps Agent](https://aws.amazon.com/devops-agent/?trk=7b4b0d25-1409-441c-b914-c5d08677c376&sc_channel=ghr) and [AWS Security Agent](https://aws.amazon.com/security-agent/?trk=7b4b0d25-1409-441c-b914-c5d08677c376&sc_channel=ghr). |
+| [aws-core](plugins/aws-core/)                                 | AWSコアスキルとMCPサーバー設定。サービス選択、CDK/CloudFormation、サーバーレス、コンテナ、ストレージ、可観測性、課金、SDK使用方法、デプロイメントをカバーします。**ここから始めてください。**                                                                                                                                                                                    |
+| [aws-agents](plugins/aws-agents/)                             | Amazon BedrockとAgentCoreを使用してAWS上でAIエージェントを構築するためのスキル。                                                                                                                                                                                                                                                                                           |
+| [aws-data-analytics](plugins/aws-data-analytics/)             | S3テーブル、AWS Glue、Athenaを使用したデータレイク、分析、ETLワークフロー用のスキル。                                                                                                                                                                                                                                                                                           |
+| [aws-agents-for-devsecops](plugins/aws-agents-for-devsecops/) | [AWS DevOpsエージェント](https://aws.amazon.com/devops-agent/?trk=7b4b0d25-1409-441c-b914-c5d08677c376&sc_channel=ghr)と[AWSセキュリティエージェント](https://aws.amazon.com/security-agent/?trk=7b4b0d25-1409-441c-b914-c5d08677c376&sc_channel=ghr)を使用して、インシデント調査、コードレビュー、リリース準備のためのUAT実行、脆弱性スキャン、ペネトレーションテストを実行します。 |
 
-Plugins are currently available for Claude Code, Codex, and Cursor. For other agents, configure the AWS MCP Server directly and install skills from this repository.
+プラグインは現在Claude Code、Codex、Cursorで利用可能です。その他のエージェントについては、AWS MCPサーバーを直接設定し、このリポジトリからスキルをインストールしてください。
 
-### Skills
+### スキル
 
-Agent skills are curated packages of instructions and reference materials that help agents complete specific AWS tasks. Skills are loaded on demand — agents discover and retrieve only what's relevant to the current task.
+エージェントスキルは、エージェントが特定のAWSタスクを完了するのを支援する、厳選された指示とリファレンスマテリアルのパッケージです。スキルはオンデマンドでロードされます。エージェントは現在のタスクに関連するもののみを検出して取得します。
 
 ```
 npx skills add aws/agent-toolkit-for-aws/skills
 ```
 
-Browse the [`skills/`](skills/) directory to see all available skills.
+すべての利用可能なスキルを確認するには、[`skills/`](skills/)ディレクトリを参照してください。
 
-### Rules files
+### ルールファイル
 
-Recommended project-level configuration files that tell agents how to use AWS most effectively — for example, by using the AWS MCP Server, discovering available skills, or searching documentation before acting.
+推奨されるプロジェクトレベルの設定ファイル。これらはエージェントにAWSの最も効果的な使用方法を指示します。例えば、AWS MCPサーバーの使用、利用可能なスキルの検出、アクション前のドキュメント検索などです。
 
-See [`rules/`](rules/) for details.
+詳細については[`rules/`](rules/)を参照してください。
 
-### AWS MCP Server
+### AWS MCPサーバー
 
-The [AWS MCP Server](https://docs.aws.amazon.com/agent-toolkit/latest/userguide/understanding-mcp-server-tools.html) is a managed server that gives agents access to AWS through the Model Context Protocol. It provides:
+[AWS MCPサーバー](https://docs.aws.amazon.com/agent-toolkit/latest/userguide/understanding-mcp-server-tools.html)は、エージェントにモデルコンテキストプロトコルを通じてAWSへのアクセスを提供するマネージドサーバーです。以下を提供します：
 
-- **Full AWS API coverage** — Interact with any of the 300+ AWS services through a single authenticated endpoint.
-- **Sandboxed script execution** — Agents can run Python scripts in an isolated environment for complex multi-step operations.
-- **Real-time documentation access** — Search and retrieve current AWS documentation, API references, and service capabilities without authentication.
-- **Enterprise controls** — Amazon CloudWatch metrics, IAM context keys for agent-specific policies, and AWS CloudTrail audit logging.
+- **フルAWS APIカバレッジ** — 単一の認証エンドポイントを通じて300以上のAWSサービスのいずれかと相互作用します。
+- **サンドボックス化されたスクリプト実行** — エージェントは複雑なマルチステップ操作のための分離された環境でPythonスクリプトを実行できます。
+- **リアルタイムドキュメントアクセス** — 認証なしで、現在のAWSドキュメント、APIリファレンス、サービス機能を検索して取得します。
+- **エンタープライズコントロール** — Amazon CloudWatchメトリクス、エージェント固有ポリシー用のIAMコンテキストキー、AWS CloudTrail監査ログ。
 
-For details on operation, available tools, authentication, and supported Regions, see the [AWS MCP Server documentation](https://docs.aws.amazon.com/agent-toolkit/latest/userguide/understanding-mcp-server-tools.html).
+操作、利用可能なツール、認証、サポートされるリージョンの詳細については、[AWS MCPサーバーのドキュメント](https://docs.aws.amazon.com/agent-toolkit/latest/userguide/understanding-mcp-server-tools.html)を参照してください。
 
-## Documentation
+## ドキュメント
 
-- [User guide](https://docs.aws.amazon.com/agent-toolkit/latest/userguide/) — Setup, configuration, and reference documentation.
-- [AWS MCP Server tools](https://docs.aws.amazon.com/agent-toolkit/latest/userguide/understanding-mcp-server-tools.html) — Reference for all available MCP tools.
+- [ユーザーガイド](https://docs.aws.amazon.com/agent-toolkit/latest/userguide/) — セットアップ、設定、リファレンスドキュメント。
+- [AWS MCPサーバーツール](https://docs.aws.amazon.com/agent-toolkit/latest/userguide/understanding-mcp-server-tools.html) — 利用可能なすべてのMCPツールのリファレンス。
 
-## How the Agent Toolkit relates to the MCP servers, skills, and plugins in AWS Labs
+## エージェントツールキットとAWS Labsのサーバー、スキル、プラグインとの関係
 
-In 2025, AWS began releasing MCP servers, skills, and plugins as part of [AWS Labs](https://github.com/awslabs). The Agent Toolkit for AWS is the successor to those tools. We recommend using the Agent Toolkit for AWS, because it offers key features including:
+2025年、AWSは[AWS Labs](https://github.com/awslabs)の一部としてMCPサーバー、スキル、プラグインのリリースを開始しました。AWS用エージェントツールキットはこれらのツールの後継です。以下を含む主な機能を提供しているため、AWS用エージェントツールキットの使用をお勧めします：
 
-- IAM condition keys that distinguish between agent actions and human actions, so you can write policies that apply only to agents. For example, you can write policies that only allow read-only actions through the MCP server, even if the user’s underlying IAM role can take write actions).
-- CloudWatch metrics and CloudTrail audit logging for every request, so you can monitor and audit coding agent activity.
-- Agent skills that have undergone thorough end-to-end evaluations, so you can be confident that workflows will complete successfully.
+- エージェントアクションとヒューマンアクションを区別するIAM条件キー。これにより、エージェント専用のポリシーを記述できます。たとえば、ユーザーの基になるIAMロールが書き込みアクション実行できる場合でも、MCPサーバーを通じた読み取り専用アクションのみを許可するポリシーを記述できます。
+- すべてのリクエストのCloudWatchメトリクスとCloudTrail監査ログ。これにより、コーディングエージェント活動を監視および監査できます。
+- 徹底的なエンドツーエンド評価を受けたエージェントスキル。ワークフローが正常に完了することを確認できます。
 
-[AWS Labs](https://github.com/awslabs) MCP servers, skills, and plugins will continue to work and accept contributions, and over time the best of AWS Labs will be transitioned to the Agent Toolkit for AWS to ensure that customers can access the broadest array of tooling and guidance for their agents.
+[AWS Labs](https://github.com/awslabs)のMCPサーバー、スキル、プラグインは引き続き機能し、貢献を受け付けます。時間とともに、AWS Labsの最高のものはAWS用エージェントツールキットに移行され、お客様が最も広いツールセットと行うための確実性を得ることができます。
 
-## License
+## ライセンス
 
-This project is licensed under the Apache-2.0 License. See [LICENSE](LICENSE) for details.
+このプロジェクトはApache-2.0ライセンスの下でライセンスされています。詳細は[LICENSE](LICENSE)を参照してください。
